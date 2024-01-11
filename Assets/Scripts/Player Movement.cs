@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
         // Get targetVelocity from input.
         Vector2 targetVelocity = new Vector2(Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
 
-        if (Mathf.Abs(targetVelocity.x) > 0.1f || Mathf.Abs(targetVelocity.y) > 0.1f)
+        if (Mathf.Abs(targetVelocity.x) > 0.2f || Mathf.Abs(targetVelocity.y) > 0.2f)
             isMoving = true;
         else
             isMoving = false;
