@@ -4,25 +4,19 @@ public class Sword : MonoBehaviour
 {
     public Transform cam;
     public Transform sword;
+    public GameObject hitBox;
 
-    public float swordRotation = 95;
-    public float swordAttackRotation = 40;
-    float targetRotation;
-
-    public float timer;
-    float timerCopy;
+    float hitWindow = 0.1f;
+    float delay = 0.9f;
     float delayCopy;
-    public float ease = 0.1f;
-    public float coolDownEaseDelta;
 
-    public bool canKill;
+    public static bool canKill;
 
-    bool isAttacking = false;
+    Animator animator;
 
     void Start()
     {
-        targetRotation = swordRotation;
-        timerCopy = timer;
+        animator = sword.gameObject.GetComponent<Animator>();
         delayCopy = 0;
     }
 
@@ -32,32 +26,21 @@ public class Sword : MonoBehaviour
         
         delayCopy -= Time.deltaTime;
 
-        canKill = false;
-
         if (Input.GetMouseButtonDown(0) && delayCopy <= 0)
         {
-            canKill = true;
-            isAttacking = true;
-            targetRotation += swordAttackRotation;
-            ease += coolDownEaseDelta;
-        }
+            animator.Play("SwordSwing");
 
-        if (isAttacking)
+            delayCopy = delay;
+            print("Swing!");
+        }
+        
+        if(delayCopy > 0 && delayCopy <= delay - hitWindow && delayCopy >= delay - hitWindow * 2)
         {
-            delayCopy = timer;
-            timerCopy -= Time.deltaTime;
-
-
-            if (timerCopy <= 0)
-            {
-                targetRotation -= swordAttackRotation;
-                ease -= coolDownEaseDelta;
-                timerCopy = timer;
-                isAttacking = false;
-            }
+            canKill = true;
         }
-
-        swordRotation += (targetRotation - swordRotation) * ease;
-        sword.localEulerAngles = new Vector3(sword.localEulerAngles.x, swordRotation, sword.localEulerAngles.z);
+        else
+        {
+            canKill = false;
+        }
     }
 }

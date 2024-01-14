@@ -8,12 +8,7 @@ public class CameraBob : MonoBehaviour
     public PlayerMovement player;
 
     float timer = 0;
-    float defaultPosY = 1;
-
-    void Start()
-    {
-        
-    }
+    float defaultPosY = 0.6f;
 
     void Update()
     {

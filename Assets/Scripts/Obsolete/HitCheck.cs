@@ -8,7 +8,7 @@ public class HitCheck : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.tag == "Enemy" && sword.canKill)
+        if(other.gameObject.tag == "Enemy" /*&& sword.canKill*/)
         {
             for (int i = 0; i < particleCount; i++)
             {
