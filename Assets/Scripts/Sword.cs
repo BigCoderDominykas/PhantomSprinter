@@ -5,12 +5,15 @@ public class Sword : MonoBehaviour
     public Transform cam;
     public Transform sword;
 
-    public float swordRotation = 105;
-    public float swordAttackRotation = 50;
+    public float swordRotation = 95;
+    public float swordAttackRotation = 40;
+    float targetRotation;
 
     public float timer;
     float timerCopy;
     float delayCopy;
+    public float ease = 0.1f;
+    public float coolDownEaseDelta;
 
     public bool canKill;
 
@@ -18,6 +21,7 @@ public class Sword : MonoBehaviour
 
     void Start()
     {
+        targetRotation = swordRotation;
         timerCopy = timer;
         delayCopy = 0;
     }
@@ -25,7 +29,7 @@ public class Sword : MonoBehaviour
     void Update()
     {
         transform.localEulerAngles = new Vector3(cam.transform.eulerAngles.x, 0, 0);
-
+        
         delayCopy -= Time.deltaTime;
 
         canKill = false;
@@ -34,22 +38,26 @@ public class Sword : MonoBehaviour
         {
             canKill = true;
             isAttacking = true;
-            swordRotation += swordAttackRotation;
+            targetRotation += swordAttackRotation;
+            ease += coolDownEaseDelta;
         }
 
-        if(isAttacking)
+        if (isAttacking)
         {
             delayCopy = timer;
             timerCopy -= Time.deltaTime;
 
+
             if (timerCopy <= 0)
             {
-                swordRotation -= swordAttackRotation;
+                targetRotation -= swordAttackRotation;
+                ease -= coolDownEaseDelta;
                 timerCopy = timer;
                 isAttacking = false;
             }
         }
 
+        swordRotation += (targetRotation - swordRotation) * ease;
         sword.localEulerAngles = new Vector3(sword.localEulerAngles.x, swordRotation, sword.localEulerAngles.z);
     }
 }
