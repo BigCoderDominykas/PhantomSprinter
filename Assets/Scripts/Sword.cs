@@ -2,21 +2,25 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
+    public static bool canKill;
+
     public Transform cam;
     public Transform sword;
     public GameObject hitBox;
+
+    public AudioClip slash;
 
     float hitWindow = 0.1f;
     float delay = 0.9f;
     float delayCopy;
 
-    public static bool canKill;
-
     Animator animator;
+    AudioSource source;
 
     void Start()
     {
         animator = sword.gameObject.GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
         delayCopy = 0;
     }
 
@@ -31,7 +35,7 @@ public class Sword : MonoBehaviour
             animator.Play("SwordSwing");
 
             delayCopy = delay;
-            print("Swing!");
+            source.PlayOneShot(slash);
         }
         
         if(delayCopy > 0 && delayCopy <= delay - hitWindow && delayCopy >= delay - hitWindow * 2)

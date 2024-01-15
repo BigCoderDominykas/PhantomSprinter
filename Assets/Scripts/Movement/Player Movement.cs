@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5;
-    public bool isMoving = false;
+    public static bool isMoving = false;
     public string deathScreen;
+
     Rigidbody rb;
+
     /// <summary> Functions to override movement speed. Will use the last added override. </summary>
     public List<System.Func<float>> speedOverrides = new List<System.Func<float>>();
 
@@ -30,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
         // Get targetVelocity from input.
         Vector2 targetVelocity = new Vector2(Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
 
+        // isMoving
         if (Mathf.Abs(targetVelocity.x) > 0.2f || Mathf.Abs(targetVelocity.y) > 0.2f)
             isMoving = true;
         else
@@ -38,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
         // Apply movement.
         rb.velocity = transform.rotation * new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.y);
 
+        // Fell off the map
         if(transform.position.y < -10)
         {
             SceneManager.LoadScene(deathScreen);

@@ -5,7 +5,6 @@ public class CameraBob : MonoBehaviour
     public float bobAmplitude;
     public float frequency;
     public GroundCheck groundCheck;
-    public PlayerMovement player;
 
     float timer = 0;
     float defaultPosY = 0.6f;
@@ -14,7 +13,7 @@ public class CameraBob : MonoBehaviour
     {
         if(groundCheck.isGrounded)
         {
-            if(player.isMoving)
+            if(PlayerMovement.isMoving)
             {
                 timer += Time.deltaTime * frequency;
                 transform.localPosition = new Vector3(transform.localPosition.x, defaultPosY + Mathf.Sin(timer) * bobAmplitude, transform.localPosition.z);
