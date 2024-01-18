@@ -50,9 +50,25 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Enemy")
+        if(collision.gameObject.CompareTag("Enemy"))
         {
             SceneManager.LoadScene(deathScreen);
+        }
+        else if(collision.gameObject.CompareTag("Wallrun"))
+        {
+            rb.constraints = RigidbodyConstraints.FreezePositionY;
+            rb.constraints = RigidbodyConstraints.FreezeRotationX;
+            //transform.Rotate(0, 0, 20);
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wallrun"))
+        {
+            rb.constraints = RigidbodyConstraints.FreezeRotationX;
+            //transform.Rotate(0, 0, 0);
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
         }
     }
 }

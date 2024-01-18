@@ -38,7 +38,7 @@ public class Sword : MonoBehaviour
             source.PlayOneShot(slash);
         }
         
-        if(delayCopy > 0 && delayCopy <= delay - hitWindow && delayCopy >= delay - hitWindow * 2)
+        if(delayCopy > 0 && delayCopy <= delay - hitWindow / 2 && delayCopy >= delay - hitWindow * 2)
         {
             canKill = true;
         }

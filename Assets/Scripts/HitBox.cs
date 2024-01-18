@@ -7,6 +7,7 @@ public class HitBox : MonoBehaviour
     public AudioClip sound;
 
     AudioSource source;
+    Level level;
 
     private void Start()
     {
@@ -26,6 +27,12 @@ public class HitBox : MonoBehaviour
                 Instantiate(particle, other.gameObject.transform.position, rotation);
             }
             Destroy(other.gameObject);
+            if (level != null)
+                level.GetEnemies();
+        }
+        else if (other.gameObject.name.Contains("Level Bounds"))
+        {
+            level = other.GetComponent<Level>();
         }
     }
 }
