@@ -7,7 +7,11 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 5;
     public static bool isMoving = false;
     public string deathScreen;
+    public string winScreen;
+    public float wallrunRotation;
+    public Transform cam;
 
+    float rot, target;
     Rigidbody rb;
 
     /// <summary> Functions to override movement speed. Will use the last added override. </summary>
@@ -46,6 +50,10 @@ public class PlayerMovement : MonoBehaviour
         {
             SceneManager.LoadScene(deathScreen);
         }
+
+        // Rotate camera on wallrun
+        rot += (target - rot) * 0.2f;
+        cam.localEulerAngles = new Vector3(0, 0, rot);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -58,8 +66,10 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.constraints = RigidbodyConstraints.FreezePositionY;
             rb.constraints = RigidbodyConstraints.FreezeRotationX;
-            //transform.Rotate(0, 0, 20);
             rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+
+            rot = 0;
+            target = wallrunRotation;
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -67,8 +77,17 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Wallrun"))
         {
             rb.constraints = RigidbodyConstraints.FreezeRotationX;
-            //transform.Rotate(0, 0, 0);
             rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+
+            target = 0;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name.Contains("Win"))
+        {
+            SceneManager.LoadScene(winScreen);
         }
     }
 }

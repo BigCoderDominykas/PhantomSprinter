@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Level : MonoBehaviour
 {
     public Transform target;
+    public GameObject platform;
+    public AudioClip clip;
 
     Enemy[] enemies;
+    AudioSource source;
 
     private void Start()
     {
@@ -15,6 +16,7 @@ public class Level : MonoBehaviour
         {
             enemy.target = enemy.transform;
         }
+        source = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,9 +46,11 @@ public class Level : MonoBehaviour
     {
         if (enemies.Length == 1)
             GetEnemies();
+
         if (enemies.Length == 0)
-        {
-            // Fade in platform
+        { 
+            platform.SetActive(true);
+            source.PlayOneShot(clip);
         }
     }
 
