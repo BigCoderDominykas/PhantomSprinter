@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5;
+    public float speed = 10;
     public static bool isMoving = false;
     public string deathScreen;
     public string winScreen;
@@ -53,23 +54,25 @@ public class PlayerMovement : MonoBehaviour
 
         // Rotate camera on wallrun
         rot += (target - rot) * 0.2f;
-        cam.localEulerAngles = new Vector3(0, 0, rot);
+        cam.localEulerAngles = new Vector3(0, 0, rot);     
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             SceneManager.LoadScene(deathScreen);
         }
-        else if(collision.gameObject.CompareTag("Wallrun"))
+        else if (collision.gameObject.CompareTag("Wallrun") && Math.Abs(Input.GetAxis("Horizontal")) > 0)
         {
             rb.constraints = RigidbodyConstraints.FreezePositionY;
             rb.constraints = RigidbodyConstraints.FreezeRotationX;
             rb.constraints = RigidbodyConstraints.FreezeRotationZ;
 
             rot = 0;
-            target = wallrunRotation;
+            target = wallrunRotation * (Input.GetAxis("Horizontal") / Math.Abs(Input.GetAxis("Horizontal")));
+
+            speed *= 2;
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -80,6 +83,8 @@ public class PlayerMovement : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezeRotationZ;
 
             target = 0;
+
+            speed /= 2;
         }
     }
 
