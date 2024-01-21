@@ -48,9 +48,12 @@ public class Level : MonoBehaviour
             GetEnemies();
 
         if (enemies.Length == 0)
-        { 
-            platform.SetActive(true);
-            source.PlayOneShot(clip);
+        {
+            if (!platform.active)
+            {
+                platform.SetActive(true);
+                source.PlayOneShot(clip);
+            }
         }
     }
 
